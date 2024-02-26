@@ -37,13 +37,13 @@ dat <- log2(dat + 1)
 #### CREATION OF MY THEME ####
 my_theme <- theme(
   plot.title = element_text(size = rel(2)),
-  panel.grid.major.y = element_line(color = 'gray', linewidth = 0.3),
-  panel.grid.minor.y = element_line(color = 'gray', linewidth = 0.1),
-  panel.grid.major.x = element_line(color = 'gray', linewidth = 0.3),
-  panel.grid.minor.x = element_line(color = 'gray', linewidth = 0.1),
+  panel.grid.major.y = element_line(color = 'gray90', linewidth = 0.3),
+  panel.grid.minor.y = element_line(color = 'gray90', linewidth = 0.1),
+  panel.grid.major.x = element_line(color = 'gray90', linewidth = 0.3),
+  panel.grid.minor.x = element_line(color = 'gray90', linewidth = 0.1),
   panel.border = element_rect(color = 'gray50', fill = NA, linewidth = 1),
   plot.background = element_rect(fill = NULL),
-  panel.background = element_rect(fill = 'gray98'),
+  panel.background = element_rect(fill = 'gray99'),
   axis.line = element_line(color = 'gray50'),
   axis.text = element_text(color = 'gray40', face = 'bold'),
   axis.text.x = element_text(size = rel(1.2)),
