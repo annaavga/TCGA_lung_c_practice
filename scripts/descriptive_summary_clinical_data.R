@@ -20,3 +20,7 @@ table <-
   tbl_summary() %>%
   save.image()
 
+
+table %>%
+  gtsummary::as_tibble() %>% 
+  writexl::write_xlsx("./results/clin_desc_tqble.xlsx")
