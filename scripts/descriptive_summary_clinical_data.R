@@ -4,6 +4,7 @@ data_clinical_patient <-
   read.delim("C:/Users/FixeI/OneDrive/Bureau/Anna/R/TCGA_lung_c_practice/raw_data/data_clinical_patient.txt", comment.char="#", header = T)
 
 View(data_clinical_patient)
+str(data_clinical_patient)
 
 
 stats <- c("SEX", "AJCC_PATHOLOGIC_TUMOR_STAGE", 
@@ -16,5 +17,6 @@ stats <- c("SEX", "AJCC_PATHOLOGIC_TUMOR_STAGE",
 table <-
   data_clinical_patient %>%
   select(all_of(stats)) %>%
-  tbl_summary()
+  tbl_summary() %>%
+  save.image()
 
