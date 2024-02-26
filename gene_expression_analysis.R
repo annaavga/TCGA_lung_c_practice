@@ -79,6 +79,25 @@ dat %>%
 
 ggsave("TLS signature mean expression.pdf")
 
+#### HEATMAP OF EXPRESSION ####
+#install.packages("pheatmap")
+library(pheatmap)
+library(RColorBrewer)
 
+
+dat %>% 
+  as.matrix() %>%
+  pheatmap( 
+    cluster_rows = F, cluster_cols = T,
+    scale = "row",
+    #treeheight_col = 0,
+    main = "Gene Expression Heatmap",
+    clustering_method = 'ward.D',
+    clustering_distance_cols = 'euclidean',
+    clustering_distance_rows = 'euclidean',
+    show_colnames = F, show_rownames = T,
+    fontsize_row = 7,
+    cutree_cols  = 2,
+    color = colorRampPalette(c("blue", "white","red"))(50)) 
 
 
