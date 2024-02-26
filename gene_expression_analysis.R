@@ -58,5 +58,25 @@ my_theme <- theme(
   legend.box.background = element_rect(fill = 'gray98',color = "gray50")
 )
 
+#### DENSITY PLOT ####
+
+#fer la mediana
+med <- median(apply(dat, 2, median))
+
+dat %>% 
+  as_tibble() %>%
+  colMeans() %>% as.data.frame() %>%
+  # # dplyr::rename("mean_expression" = ".") %>%
+  ggplot2::ggplot(aes(x = .)) +
+  geom_density(fill = "pink", alpha = 0.3) + 
+  geom_vline(aes(xintercept = med)) +
+  geom_text(aes(x = 10, label = "TLS median signature"), y= 0.45) +
+  geom_text(aes(x = 7, label = "TLS LOW"), y= 0.35) +
+  geom_text(aes(x = 11, label = "TLS HIGH"), y= 0.35) +
+  xlab("TLS signature mean expression") +
+  ylab("Density") +
+  my_theme
+
+
 
 
