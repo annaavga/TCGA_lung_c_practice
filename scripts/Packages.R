@@ -9,3 +9,5 @@ library(tidyverse)
 library (dslabs)
 #install.packages("gtsummary")
 library(gtsummary)
+
+library(writexl)
