@@ -29,7 +29,7 @@ dat <-
   dat[, -which(colnames(dat)== "Entrez_Gene_Id")]
 dat <- log2(dat + 1)
 
-save(dat,file="data_gene_expression.txt")
+write.table(dat,"data_gene_expression.txt",sep="\t")
 
 #### DENSITY PLOT ####
 
