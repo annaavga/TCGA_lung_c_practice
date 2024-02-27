@@ -9,5 +9,7 @@ library(tidyverse)
 library (dslabs)
 #install.packages("gtsummary")
 library(gtsummary)
-
+#install.packages("writexl")
 library(writexl)
+#install.packages("ggsurvfit")
+library(ggsurvfit)
