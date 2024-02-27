@@ -35,8 +35,8 @@ data_gene_expr <- data_gene_expression %>% t() %>% as.data.frame() %>% rownames_
 merged_data <- data_gene_expr %>% left_join(data_clinical, by= 'PATIENT.ID')
 str(merged_data)
 
-
-
+#transform the overall survival into 0 and 1
+merged_data <- merged_data %>% mutate(OS_STATUS =  recode(OS_STATUS, "0:LIVING" = "0"),  OS_STATUS = recode(OS_STATUS, "1:DECEASED" = "1"))
 
 
 
