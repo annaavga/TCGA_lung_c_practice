@@ -10,6 +10,8 @@ source("./scripts/Functions.R")
 View(data_clinical_patient)
 str(data_clinical_patient)
 
+data_clinical_patient$AGE <- as.numeric(data_clinical_patient$AGE)
+
 stats <- c("SEX", "AJCC_PATHOLOGIC_TUMOR_STAGE", 
            "AJCC_STAGING_EDITION", "HISTORY_NEOADJUVANT_TRTYN",
            "ICD_10", "ICD_O_3_HISTOLOGY", "ICD_O_3_SITE", "NEW_TUMOR_EVENT_AFTER_INITIAL_TREATMENT",
