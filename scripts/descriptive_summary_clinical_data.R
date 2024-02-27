@@ -28,3 +28,5 @@ clinical_data_descriptive_tab
 clinical_data_descriptive_tab %>%
   gtsummary::as_tibble() %>% 
   writexl::write_xlsx("./results/clin_desc_table.xlsx")
+
+write.table(data_clinical_patient,"data_clinical_patient.txt",sep="\t")
