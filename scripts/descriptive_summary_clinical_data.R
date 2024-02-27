@@ -3,9 +3,12 @@
 data_clinical_patient <-
   read.delim("C:/Users/FixeI/OneDrive/Bureau/Anna/R/TCGA_lung_c_practice/raw_data/data_clinical_patient.txt", comment.char="#", header = T)
 
+set.seed(123)
+source("./scripts/Packages.R")
+source("./scripts/Functions.R")
+
 View(data_clinical_patient)
 str(data_clinical_patient)
-
 
 stats <- c("SEX", "AJCC_PATHOLOGIC_TUMOR_STAGE", 
            "AJCC_STAGING_EDITION", "HISTORY_NEOADJUVANT_TRTYN",
@@ -14,13 +17,12 @@ stats <- c("SEX", "AJCC_PATHOLOGIC_TUMOR_STAGE",
            "PRIOR_DX", "RACE", "RADIATION_THERAPY", "OS_STATUS", "DSS_STATUS",
            "DFS_STATUS", "PFS_STATUS", "GENETIC_ANCESTRY_LABEL")
 
-table <-
+clinical_data_descriptive_tab <-
   data_clinical_patient %>%
   select(all_of(stats)) %>%
-  tbl_summary() %>%
-  save.image()
+  tbl_summary()
+clinical_data_descriptive_tab
 
-
-table %>%
+clinical_data_descriptive_tab %>%
   gtsummary::as_tibble() %>% 
-  writexl::write_xlsx("./results/clin_desc_tqble.xlsx")
+  writexl::write_xlsx("./results/clin_desc_table.xlsx")
