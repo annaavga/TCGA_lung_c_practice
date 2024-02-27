@@ -30,7 +30,6 @@ dat <-
 dat <- log2(dat + 1)
 
 write.table(dat,"data_gene_expression.txt",sep="\t")
-
 #### DENSITY PLOT ####
 
 #fer la mediana
@@ -52,6 +51,7 @@ dat %>%
 
 ggsave("TLS signature mean expression.pdf")
 
+ 
 #### HEATMAP OF EXPRESSION ####
 #install.packages("pheatmap")
 library(pheatmap)

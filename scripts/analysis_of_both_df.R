@@ -38,8 +38,25 @@ str(merged_data)
 #transform the overall survival into 0 and 1
 merged_data <- merged_data %>% mutate(OS_STATUS =  recode(OS_STATUS, "0:LIVING" = "0"),  OS_STATUS = recode(OS_STATUS, "1:DECEASED" = "1"))
 
+#separate cohort at median
 
 
+TLS_signature <- 
+  c("CD79A", "FCRL5", "SSR4", "XBP1", 
+    "IL7R", "CXCL12", "LUM", "C1QA", "C7",
+    "CD52", "APOE", "PTGDS", "PIM2", "DERL3",
+    "CCL19", "CCL21", "CXCL13", "CCL17", "CCL22", 
+    "IL16", "ICAM2", "ICAM3", "VCAM1", "MADCAM1", 
+    "ITGAL", "ITGA4", "ITGAD", "LTB",  "CD37")
+
+TLS_HIGH <- data_gene_expression %>%
+  as_tibble() %>%
+  group_by(colMeans(data_gene_expression)> med)
 
 
+TLS_HIGH <- merged_data %>% 
+  as_tibble() %>%
+  colMeans(colnames = TLS_signature) %>% as.data.frame() %>%
+
+? group_by
 
