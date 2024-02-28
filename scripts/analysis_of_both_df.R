@@ -52,6 +52,7 @@ means <- as.data.frame(rowMeans(subset(merged_data, select = c(colnames = TLS_si
 
 means$PATIENT.ID <- merged_data$PATIENT.ID
 means$SURVIVAL <- merged_data$OS_STATUS
+means$TIME <- merged_data$OS_MONTHS
 
 means <- means %>% 
   rename("MEAN.EXPRESSION" = "rowMeans(subset(merged_data, select = c(colnames = TLS_signature)), na.rm = TRUE)")
@@ -59,11 +60,22 @@ means <- means %>%
 med <- median(means$MEAN.EXPRESSION)
 
 str(means)
+means$SURVIVAL <- as.numeric(means$SURVIVAL)
 
-TLS_HIGH <- means %>% 
-  filter(MEAN.EXPRESSION > median(means$MEAN.EXPRESSION))
-TLS_LOW <- means %>% 
-  filter(MEAN.EXPRESSION < median(means$MEAN.EXPRESSION))
+means$TLS_CAT <- cut(means$MEAN.EXPRESSION,
+                       breaks= c(-Inf, med, Inf),
+                       labels=c('TLS_LOW', 'TLS_HIGH'))
 
+#TLS_HIGH <- means %>% 
+ # filter(MEAN.EXPRESSION > median(means$MEAN.EXPRESSION))
+#TLS_LOW <- means %>% 
+ # filter(MEAN.EXPRESSION < median(means$MEAN.EXPRESSION))
+
+
+##kaplan meyer survival plot
+survival <- survfit(Surv(TIME, SURVIVAL) ~ TLS_CAT, data = means)
+
+survival %>% plot( ylab = "SURVIVAL", xlab = "MONTHS",
+     col = c("blue", "red"), main = "Kaplan Meier Survival Plot") 
 
 
