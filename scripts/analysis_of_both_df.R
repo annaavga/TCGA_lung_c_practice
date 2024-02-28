@@ -72,10 +72,30 @@ means$TLS_CAT <- cut(means$MEAN.EXPRESSION,
  # filter(MEAN.EXPRESSION < median(means$MEAN.EXPRESSION))
 
 
-##kaplan meyer survival plot
+#### KAPLAN MEIER SURVIVAL PLOT ####
 survival <- survfit(Surv(TIME, SURVIVAL) ~ TLS_CAT, data = means)
 
-survival %>% plot( ylab = "SURVIVAL", xlab = "MONTHS",
+plot(survival, ylab = "SURVIVAL", xlab = "MONTHS",
      col = c("blue", "red"), main = "Kaplan Meier Survival Plot") 
+
+ggsurvplot(survival, 
+           risk.table = T, 
+           pval =  T, 
+           surv.median.line = "hv",
+           surv.scale = "percent",
+           break.time.by = 50,
+           risk.table.y.text.col = T,
+           risk.table.y.text = F,
+           ylab = "SURVIVAL", 
+           xlab = "MONTHS",
+           legend.title = "TLS gene expression",
+           legend.labs = c("LOW", "HIGH"),
+           palette = c("cyan3","brown2"),
+           ggtheme = my_theme,
+           censor = T
+           )
+
+
+
 
 
