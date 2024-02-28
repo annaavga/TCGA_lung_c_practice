@@ -40,7 +40,6 @@ merged_data <- merged_data %>% mutate(OS_STATUS =  recode(OS_STATUS, "0:LIVING" 
 
 #separate cohort at median
 
-
 TLS_signature <- 
   c("CD79A", "FCRL5", "SSR4", "XBP1", 
     "IL7R", "CXCL12", "LUM", "C1QA", "C7",
@@ -49,14 +48,22 @@ TLS_signature <-
     "IL16", "ICAM2", "ICAM3", "VCAM1", "MADCAM1", 
     "ITGAL", "ITGA4", "ITGAD", "LTB",  "CD37")
 
-TLS_HIGH <- data_gene_expression %>%
-  as_tibble() %>%
-  group_by(colMeans(data_gene_expression)> med)
+means <- as.data.frame(rowMeans(subset(merged_data, select = c(colnames = TLS_signature)), na.rm = TRUE))
+
+means$PATIENT.ID <- merged_data$PATIENT.ID
+means$SURVIVAL <- merged_data$OS_STATUS
+
+means <- means %>% 
+  rename("MEAN.EXPRESSION" = "rowMeans(subset(merged_data, select = c(colnames = TLS_signature)), na.rm = TRUE)")
+
+med <- median(means$MEAN.EXPRESSION)
+
+str(means)
+
+TLS_HIGH <- means %>% 
+  filter(MEAN.EXPRESSION > median(means$MEAN.EXPRESSION))
+TLS_LOW <- means %>% 
+  filter(MEAN.EXPRESSION < median(means$MEAN.EXPRESSION))
 
 
-TLS_HIGH <- merged_data %>% 
-  as_tibble() %>%
-  colMeans(colnames = TLS_signature) %>% as.data.frame() %>%
-
-? group_by
 
