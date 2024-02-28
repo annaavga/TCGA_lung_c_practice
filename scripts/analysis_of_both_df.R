@@ -38,7 +38,7 @@ str(merged_data)
 #transform the overall survival into 0 and 1
 merged_data <- merged_data %>% mutate(OS_STATUS =  recode(OS_STATUS, "0:LIVING" = "0"),  OS_STATUS = recode(OS_STATUS, "1:DECEASED" = "1"))
 
-#separate cohort at median
+#### SEPARATE COHORT AT THE MEDIAN ####
 
 TLS_signature <- 
   c("CD79A", "FCRL5", "SSR4", "XBP1", 
@@ -102,7 +102,15 @@ exp(coef(log_reg_survival))
 
 # INTERPRETATION: OR < 1 = it's a protector factor. 
 # For every unit or mean expression, the log of probability of the event (death) 
-# diminishes by 0.3352, significatively (pval<0.05)
+# diminishes by 0.3352, significantly (pval<0.05)
+
+#### GSVA METHOD ####
+if (!require("BiocManager", quietly = TRUE))
+  install.packages("BiocManager")
+library(BiocManager)
+
+BiocManager::install("GSVA")
+library(boot, cluster, foreign, lattice, MASS, Matrix, mgcv, nlme, survival)
 
 
 
