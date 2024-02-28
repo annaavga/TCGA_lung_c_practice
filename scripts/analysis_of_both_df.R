@@ -95,7 +95,14 @@ ggsurvplot(survival,
            censor = T
            )
 
+#### LOGISTIC REGRESSION ####
+log_reg_survival <- glm(SURVIVAL ~ MEAN.EXPRESSION , data = means, family = "binomial")
+summary(log_reg_survival)
+exp(coef(log_reg_survival))
 
+# INTERPRETATION: OR < 1 = it's a protector factor. 
+# For every unit or mean expression, the log of probability of the event (death) 
+# diminishes by 0.3352, significatively (pval<0.05)
 
 
 
