@@ -74,3 +74,26 @@ data_gsva <- cbind(gsva.es, names$`data_mrna$Hugo_Symbol`)
 data_gsva <- data_gsva %>% 
   rename("GENE_NAME" = "names$`data_mrna$Hugo_Symbol`")
 
+rownames(data_gsva) <- data_gsva$GENE_NAME
+data_gsva <- 
+  data_gsva[, -which(colnames(data_gsva) == "GENE_NAME")] 
+
+#### DENSITY PLOT ####
+density_plot_gsva <- data_gsva %>% 
+  as_tibble() %>%
+  colMeans() %>% as.data.frame() %>%
+  # # dplyr::rename("mean_expression" = ".") %>%
+  ggplot2::ggplot(aes(x = .)) +
+  geom_density(fill = "lightblue2", alpha = 0.3) + 
+  geom_vline(aes(xintercept = 0.2, col = "red")) +
+  geom_vline(aes(xintercept = -0.2, col = "red")) +
+  #geom_text(aes(x = 0.15, label = "TLS median signature"), y= 0.45) +
+  #geom_text(aes(x = 7, label = "TLS LOW"), y= 0.35) +
+  #geom_text(aes(x = 11, label = "TLS HIGH"), y= 0.35) +
+  xlab("GSVA score") +
+  ylab("Density") +
+  my_theme +
+  theme(legend.position = "none")
+
+ggsave("GSVA score.pdf")
+density_plot_gsva
