@@ -16,13 +16,15 @@ TLS_signature <-
     "IL16", "ICAM2", "ICAM3", "VCAM1", "MADCAM1", 
     "ITGAL", "ITGA4", "ITGAD", "LTB",  "CD37")
 
-data_gene_set <- subset(data_mrna, Hugo_Symbol %in% TLS_signature)
-rownames(data_gene_set) <- data_gene_set[,1]
-data_gene_set <- 
-  data_gene_set[, -which(colnames(data_gene_set) == "Hugo_Symbol")] 
-data_gene_set <-
-  data_gene_set[, -which(colnames(data_gene_set)== "Entrez_Gene_Id")]
-data_gene_set <- log2(data_gene_set + 1)
+gene_signature <- data_mrna %>%
+  subset(Hugo_Symbol %in% TLS_signature) %>%
+  `rownames<-`(.[,1]) %>% 
+  select(-Hugo_Symbol) %>% 
+  select(-Entrez_Gene_Id) 
+
+gene_signature <- log2(gene_signature + 1)
+
+str(gene_signature)
 
 #take sample of genes, without those included in the dataset
 data_no_set <- data_mrna[!(data_mrna$Hugo_Symbol %in% TLS_signature),]
