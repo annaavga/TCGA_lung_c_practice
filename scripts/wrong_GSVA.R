@@ -127,6 +127,10 @@ GSVA_and_MEDIAN <- GSVA_COL %>%
   cbind(MEDIAN_COL) %>%
   mutate(COINCIDENCE =  ifelse(GSVA_and_MEDIAN$GSVA_CAT == GSVA_and_MEDIAN$MEDIAN_CAT, "YES", "NO")) 
 
+GSVA_and_MEDIAN %>%
+  rownames_to_column() %>%
+  write_xlsx("./results/GSVA_MEDIAN_comparison_table.xlsx")
+
 #find n of coincidence
 COINCIDENCE_GSVA_MED <- GSVA_and_MEDIAN %>%
   group_by(COINCIDENCE)%>%
