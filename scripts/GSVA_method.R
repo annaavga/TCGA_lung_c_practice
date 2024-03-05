@@ -7,6 +7,17 @@ source("./scripts/Functions.R")
 data_mrna <- read.delim(
   "C:/Users/FixeI/OneDrive/Bureau/Anna/R/TCGA_lung_c_practice/raw_data/data_mrna_seq_v2_rsem.txt", 
   header = T)
+
+GSVA_data <- data_mrna %>%
+  distinct(Hugo_Symbol, .keep_all = TRUE) %>%
+  `rownames<-`(.[,1]) %>%
+  select(-Hugo_Symbol) %>% 
+  select(-Entrez_Gene_Id)
+
+GSVA_data <- log2(GSVA_data + 1)
+
+str(GSVA_data)
+
 #choose data from gene set
 TLS_signature <- 
   c("CD79A", "FCRL5", "SSR4", "XBP1", 
@@ -15,16 +26,6 @@ TLS_signature <-
     "CCL19", "CCL21", "CXCL13", "CCL17", "CCL22", 
     "IL16", "ICAM2", "ICAM3", "VCAM1", "MADCAM1", 
     "ITGAL", "ITGA4", "ITGAD", "LTB",  "CD37")
-
-gene_signature <- data_mrna %>%
-  subset(Hugo_Symbol %in% TLS_signature) %>%
-  `rownames<-`(.[,1]) %>% 
-  select(-Hugo_Symbol) %>% 
-  select(-Entrez_Gene_Id) 
-
-gene_signature <- log2(gene_signature + 1)
-
-str(gene_signature)
 
 #take sample of genes, without those included in the dataset
 data_no_set <- data_mrna[!(data_mrna$Hugo_Symbol %in% TLS_signature),]
@@ -38,12 +39,13 @@ data_sampled <-
 data_sampled <- log2(data_sampled + 1)
 
 #join the two dataframes
-finaldat_GSVA <- data_sampled %>% bind_rows(data_gene_set)
+ <- data_sampled %>% bind_rows(data_gene_set)
 str(finaldat_GSVA)
 
 #prepare the df to do the analysis
-finaldat_GSVA <- as.matrix(finaldat_GSVA)
-class(finaldat_GSVA) <- "numeric"
+GSVA_data <- as.matrix(GSVA_data)
+class(GSVA_data) <- "numeric"
+
 
 #choose the gene signature
 TLS_signature <- 
@@ -58,7 +60,7 @@ TLS_signature <- as.list(TLS_signature)
 class(TLS_signature)
 
 #PERFORM GSVA
-gsvaPar <- gsvaParam(finaldat_GSVA , TLS_signature)
+gsvaPar <- gsvaParam(GSVA_data , TLS_signature)
 gsvaPar
 
 gsva.es <- gsva(gsvaPar, verbose=F)
