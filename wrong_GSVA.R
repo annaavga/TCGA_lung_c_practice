@@ -122,6 +122,27 @@ MEDIAN_COL <- data_gene_set %>%
                        include.lowest = F))
 
 
-#merge dataframes
+#merge dataframes and adding column of coincidence
+GSVA_and_MEDIAN <- GSVA_COL %>% 
+  cbind(MEDIAN_COL) %>%
+  mutate(COINCIDENCE =  ifelse(GSVA_and_MEDIAN$GSVA_CAT == GSVA_and_MEDIAN$MEDIAN_CAT, "YES", "NO")) 
+
+#find n of coincidence
+COINCIDENCE_GSVA_MED <- GSVA_and_MEDIAN %>%
+  group_by(COINCIDENCE)%>%
+  dplyr::summarise(n()) 
+  
+#PLOT of GSVA and MEDIAN
+GSVA_and_MEDIAN %>%
+  group_by(COINCIDENCE) %>%
+  ggplot(aes(MEDIAN_MEAN, GSVA_MEAN)) +
+  geom_point() +                                      
+  stat_smooth(method = "lm", 
+              formula = y ~ x, 
+              geom = "smooth") 
+
+GSVA_MED_REGRESSION <- glm(GSVA_MEAN ~ MEDIAN_MEAN, data = GSVA_and_MEDIAN)
+summary(GSVA_MED_REGRESSION)
+
 
 
