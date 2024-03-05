@@ -18,7 +18,7 @@ GSVA_data <- log2(GSVA_data + 1)
 
 str(GSVA_data)
 
-#choose data from gene set
+#choose gene signature
 TLS_signature <- 
   c("CD79A", "FCRL5", "SSR4", "XBP1", 
     "IL7R", "CXCL12", "LUM", "C1QA", "C7",
@@ -27,39 +27,14 @@ TLS_signature <-
     "IL16", "ICAM2", "ICAM3", "VCAM1", "MADCAM1", 
     "ITGAL", "ITGA4", "ITGAD", "LTB",  "CD37")
 
-#take sample of genes, without those included in the dataset
-data_no_set <- data_mrna[!(data_mrna$Hugo_Symbol %in% TLS_signature),]
-data_sampled <- sample_n(data_no_set, 100)
-
-rownames(data_sampled) <- data_sampled[,1]
-data_sampled <- 
-  data_sampled[, -which(colnames(data_sampled) == "Hugo_Symbol")] 
-data_sampled <-
-  data_sampled[, -which(colnames(data_sampled)== "Entrez_Gene_Id")]
-data_sampled <- log2(data_sampled + 1)
-
-#join the two dataframes
- <- data_sampled %>% bind_rows(data_gene_set)
-str(finaldat_GSVA)
-
-#prepare the df to do the analysis
+#prepare the df and gene signature to do the analysis
 GSVA_data <- as.matrix(GSVA_data)
 class(GSVA_data) <- "numeric"
-
-
-#choose the gene signature
-TLS_signature <- 
-  c("CD79A", "FCRL5", "SSR4", "XBP1", 
-    "IL7R", "CXCL12", "LUM", "C1QA", "C7",
-    "CD52", "APOE", "PTGDS", "PIM2", "DERL3",
-    "CCL19", "CCL21", "CXCL13", "CCL17", "CCL22", 
-    "IL16", "ICAM2", "ICAM3", "VCAM1", "MADCAM1", 
-    "ITGAL", "ITGA4", "ITGAD", "LTB",  "CD37")
 
 TLS_signature <- as.list(TLS_signature)
 class(TLS_signature)
 
-#PERFORM GSVA
+##PERFORM GSVA
 gsvaPar <- gsvaParam(GSVA_data , TLS_signature)
 gsvaPar
 
@@ -68,6 +43,7 @@ gsva.es <- gsva(gsvaPar, verbose=F)
 
 gsva.es <- as.data.frame(gsva.es)
 class(gsva.es)
+###################fins aqui, mes no carrega
 
 #add the names of the genes into the dataframe
 names <- as.data.frame(data_mrna$Hugo_Symbol)

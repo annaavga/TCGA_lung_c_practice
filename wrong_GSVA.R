@@ -92,3 +92,36 @@ density_plot_gsva <- data_gsva %>%
 density_plot_gsva
 ggsave("GSVA score.pdf")
 
+
+####COMPARISON WITH MEDIAN ####
+#gsva data
+GSVA_COL <- gsva.es %>%
+  colMeans() %>%
+  data.frame() %>%
+  rename("GSVA_MEAN" = '.') %>%
+  mutate(GSVA_CAT =cut(GSVA_COL$GSVA_MEAN, 
+      breaks = c(-Inf, 0, Inf), 
+      labels = c("LOW", "HIGH"),
+      include.lowest = T))
+  
+str(GSVA_COL)
+class(GSVA_COL)
+
+#median data
+MEDIAN <- median(apply(data_gene_set, 2, median))
+
+class(MEDIAN)
+
+MEDIAN_COL <- data_gene_set %>%
+  colMeans() %>%
+  data.frame() %>%
+  rename("MEDIAN_MEAN" = '.') %>%
+  mutate(MEDIAN_CAT = cut(MEDIAN_COL$MEDIAN_MEAN, 
+                       breaks = c(-Inf, MEDIAN, Inf), 
+                       labels = c("LOW", "HIGH"),
+                       include.lowest = F))
+
+
+#merge dataframes
+
+
