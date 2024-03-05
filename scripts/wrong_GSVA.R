@@ -145,7 +145,7 @@ GSVA_and_MEDIAN %>%
               formula = y ~ x, 
               geom = "smooth") 
 
-GSVA_MED_REGRESSION <- glm(GSVA_MEAN ~ MEDIAN_MEAN, data = GSVA_and_MEDIAN)
+GSVA_MED_REGRESSION <- lm(GSVA_MEAN ~ MEDIAN_MEAN, data = GSVA_and_MEDIAN)
 summary(GSVA_MED_REGRESSION)
 
 
