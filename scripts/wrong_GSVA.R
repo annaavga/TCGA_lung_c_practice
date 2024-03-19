@@ -134,7 +134,8 @@ GSVA_and_MEDIAN %>%
 #find n of coincidence
 COINCIDENCE_GSVA_MED <- GSVA_and_MEDIAN %>%
   group_by(COINCIDENCE)%>%
-  dplyr::summarise(n()) 
+  dplyr::summarise(n()) %>%
+  write_xlsx("./results/GSVA_MEDIAN_summary.xlsx")
   
 #PLOT of GSVA and MEDIAN
 GSVA_and_MEDIAN %>%
