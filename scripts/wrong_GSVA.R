@@ -108,7 +108,8 @@ str(GSVA_COL)
 class(GSVA_COL)
 
 #median data
-MEDIAN <- median(apply(data_gene_set, 2, median))
+MEDIAN <- median(colMeans(data_gene_set))
+
 
 class(MEDIAN)
 
@@ -117,7 +118,7 @@ MEDIAN_COL <- data_gene_set %>%
   data.frame() %>%
   rename("MEDIAN_MEAN" = '.') %>%
   mutate(MEDIAN_CAT = cut(MEDIAN_COL$MEDIAN_MEAN, 
-                       breaks = c(-Inf, MEDIAN, Inf), 
+                       breaks = c(-Inf, 8.9, Inf), 
                        labels = c("LOW", "HIGH"),
                        include.lowest = F))
 
@@ -132,22 +133,14 @@ GSVA_and_MEDIAN %>%
   write_xlsx("./results/GSVA_MEDIAN_comparison_table.xlsx")
 
 #find n of coincidence
-COINCIDENCE_GSVA_MED <- GSVA_and_MEDIAN %>%
+COINCIDENCE_GSVA_MED <- 
+  GSVA_and_MEDIAN %>%
   group_by(COINCIDENCE)%>%
   dplyr::summarise(n()) %>%
   write_xlsx("./results/GSVA_MEDIAN_summary.xlsx")
+ 
   
-#PLOT of GSVA and MEDIAN
-GSVA_and_MEDIAN %>%
-  group_by(COINCIDENCE) %>%
-  ggplot(aes(MEDIAN_MEAN, GSVA_MEAN)) +
-  geom_point() +                                      
-  stat_smooth(method = "lm", 
-              formula = y ~ x, 
-              geom = "smooth") 
-
-GSVA_MED_REGRESSION <- lm(GSVA_MEAN ~ MEDIAN_MEAN, data = GSVA_and_MEDIAN)
-summary(GSVA_MED_REGRESSION)
-
+GSVA_and_MEDIAN %>% group_by(GSVA_CAT, MEDIAN_CAT)%>%
+  summarise(n())
 
 
