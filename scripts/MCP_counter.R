@@ -18,11 +18,27 @@ gene_expression <- read.delim("C:/Users/FixeI/OneDrive/Bureau/Anna/R/TCGA_lung_c
 str(gene_expression)
 #MCP_counter 
 
+data_mrna_seq_v2_rsem <- 
+  read.delim("C:/Users/FixeI/OneDrive/Bureau/Anna/R/TCGA_lung_c_practice/raw_data/data_mrna_seq_v2_rsem.txt", header = T)
+expression <- data_mrna_seq_v2_rsem %>%
+  column_to_rownames(var = "Hugo_Symbol")
+data_mrna_seq_v2_rsem[duplicated(data_mrna_seq_v2_rsem), ]
+
+AFFYMETRIX_PROBESET <- read.delim2("C:/Users/FixeI/OneDrive/Bureau/Anna/R/TCGA_lung_c_practice/raw_data/AFFYMETRIX_GENE_TABLE.txt", comment.char="#")
+AFFYMETRIX_PROBESET<- AFFYMETRIX_PROBESET %>%
+  select(c(ID, Gene.Symbol, ENTREZ_GENE_ID)) %>%
+  t()%>%
+  filter(
+    Gene.symbol %in% c("versicolor", "virginica" )
+  )
+?dplyr::select
+
 MCPcounter <- MCPcounter.estimate(
-  gene_expression,
-  featuresType= c( "affy133P2_probesets" ),probesets=read.table(curl("http://raw.githubusercontent.com/ebecht/MCPcounter/master/Signatures/probesets.txt"),sep="\t",stringsAsFactors=FALSE,colClasses="character"),
+  data_mrna_seq_v2_rsem,
+  featuresType= c( "HUGO_symbols" ),probesets=read.table(curl("http://raw.githubusercontent.com/ebecht/MCPcounter/master/Signatures/probesets.txt"),sep="\t",stringsAsFactors=FALSE,colClasses="character"),
   genes=read.table(curl("http://raw.githubusercontent.com/ebecht/MCPcounter/master/Signatures/genes.txt"),sep="\t",stringsAsFactors=FALSE,header=TRUE,colClasses="character",check.names=FALSE)
 )
+
 MCPcounter::MCPcounter.estimate
 heatmap(as.matrix(MCPcounter),col=colorRampPalette(c("blue","white","red"))(100))
 
