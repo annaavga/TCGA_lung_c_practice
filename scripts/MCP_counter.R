@@ -34,12 +34,13 @@ MCPcounter <- MCPcounter.estimate(
 
 ?MCPcounter::MCPcounter.estimate
 library(pheatmap)
+
 MCPcounter %>%
   as.matrix()%>%
   pheatmap(
     cluster_rows = T, cluster_cols = T,
     scale = "row",
-    #treeheight_col = 0,
+    treeheight_col = 0,
     main = "MCP counter heatmap",
     clustering_method = 'ward.D2',
     clustering_distance_cols = 'euclidean',
@@ -50,5 +51,13 @@ MCPcounter %>%
     cutree_cols  = 2,
     color = colorRampPalette(c("blue", "white","red"))(100)
     ) 
+
+#Add annotations - CONTINUE HERE
+library(readxl)
+GSVA_MEDIAN <- read_excel("results/GSVA_MEDIAN_comparison_table.xlsx")
+ 
+#https://www.reneshbedre.com/blog/heatmap-with-pheatmap-package-r.html?utm_content=cmp-true
+
+
 #other version of heatmap
 heatmap(as.matrix(MCPcounter),col=colorRampPalette(c("blue","white","red"))(100))
